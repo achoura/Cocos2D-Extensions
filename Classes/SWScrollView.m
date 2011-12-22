@@ -421,7 +421,7 @@
     if (clipsToBounds_) {
         glEnable(GL_SCISSOR_TEST);
         const CGFloat s = [[CCDirector sharedDirector] contentScaleFactor];
-        glScissor(self.position.x, self.position.y, viewSize_.width*s, viewSize_.height*s);
+        glScissor(self.position.x*s, self.position.y*s, viewSize_.width*s, viewSize_.height*s);
     }
 }
 /**
