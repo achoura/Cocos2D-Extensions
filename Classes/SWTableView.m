@@ -221,13 +221,15 @@
     
     cellSize  = [dataSource_ cellSizeForTable:self];
     cellCount = [dataSource_ numberOfCellsInTableView:self];
-    
+
     switch (self.direction) {
         case SWScrollViewDirectionHorizontal:
             size = CGSizeMake(cellCount * cellSize.width, cellSize.height);
+            size.width  = MAX(size.width,  viewSize_.width);
             break;
         default:
             size = CGSizeMake(cellSize.width, cellCount * cellSize.height);
+            size.height = MAX(size.height, viewSize_.height);
             break;
     }
     [self setContentSize:size];
