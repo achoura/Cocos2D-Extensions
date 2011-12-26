@@ -167,7 +167,7 @@
     [super dealloc];
 }
 -(void)registerWithTouchDispatcher {
-    [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:NO];
+    [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
 }
 -(BOOL)isNodeVisible:(CCNode *)node {
     const CGPoint offset = [self contentOffset];
