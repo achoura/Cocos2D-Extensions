@@ -54,6 +54,7 @@
 	}
 	
 	if(children_) {
+		[self sortAllChildren];
 		ccArray *arrayData = children_->data;
 		NSUInteger i = 0;
 		
