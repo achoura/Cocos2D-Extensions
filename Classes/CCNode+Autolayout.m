@@ -33,18 +33,19 @@
 #import "CCGrid.h"
 
 @implementation CCNode (Autolayout)
-- (void) visit
+
+- (void)iterate
 {
 	// quick return if not visible
-	if (!visible_)
+	if (!_visible)
 		return;
 	
 	[self performSelector:@selector(layout)];
 	
-	glPushMatrix();
+	kmGLPushMatrix();
 	
-	if ( grid_ && grid_.active) {
-		[grid_ beforeDraw];
+	if ( _grid && _grid.active) {
+		[_grid beforeDraw];
 		[self transformAncestors];
 	}
 	
@@ -53,9 +54,9 @@
 		[self performSelector:@selector(beforeDraw)];
 	}
 	
-	if(children_) {
+	if(_children) {
 		[self sortAllChildren];
-		ccArray *arrayData = children_->data;
+		ccArray *arrayData = _children->data;
 		NSUInteger i = 0;
 		
 		// draw children zOrder < 0
@@ -78,27 +79,33 @@
 		
 	} else
 		[self draw];
-		 
+
 	if ([self respondsToSelector:@selector(afterDraw)]) {
 		[self performSelector:@selector(afterDraw)];
 	}
-	if ( grid_ && grid_.active)
-		[grid_ afterDraw:self];
+
+    // reset for next frame
+	_orderOfArrival = 0;
+
+	if ( _grid && _grid.active)
+		[_grid afterDraw:self];
 	
-	glPopMatrix();
+	kmGLPopMatrix();
 }
+
 - (void)layoutChildren {}
 - (void)layout {
-	if (isTransformDirty_ && isTransformGLDirty_ && isInverseDirty_) {
+	if (_isTransformDirty && _isInverseDirty) {
 		[self layoutChildren];
-		if (grid_ && grid_.active) {
-			self.grid = [[grid_ class] gridWithSize:grid_.gridSize];
+		if (_grid && _grid.active) {
+			self.grid = [[_grid class] gridWithSize:_grid.gridSize];
 			self.grid.active = YES;
 		}
 	}
 }
+
 - (void)setNeedsLayout {
-	isTransformDirty_ = isTransformGLDirty_ = isInverseDirty_ = YES;
+	_isTransformDirty = _isInverseDirty = YES;
 }
 @end
 
@@ -106,9 +113,9 @@
 @implementation CCScene (Autolayout)
 
 - (void)setNeedsLayout {
-	self.contentSize = [[[CCDirector sharedDirector] openGLView] frame].size;
+	self.contentSize = [[[CCDirector sharedDirector] view] frame].size;
 	CCNode *child;
-	CCARRAY_FOREACH(children_, child) {
+	CCARRAY_FOREACH(_children, child) {
 		[child setNeedsLayout];
 	}
 }

@@ -44,6 +44,11 @@
  * You must call setNeedsLayout to trigger layoutChidren method.
  */
 @interface CCNode (Autolayout)
+
+// yet another visit
+
+- (void)iterate;
+
 /**
  * The default implementation does nothing.
  *
